@@ -8,13 +8,15 @@ namespace MovieRatingServer.Services
 {
     public class MongoService
     {
-        private readonly IMongoCollection<Movie> _moviesCollection;
+        public IMongoCollection<Movie> moviesCollection;
 
         public MongoService(IOptions<MongoSettings> mongoSettings)
         {
             MongoClient client = new MongoClient(mongoSettings.Value.ConnectionURI);
             IMongoDatabase database = client.GetDatabase(mongoSettings.Value.DatabaseName);
-            _moviesCollection = database.GetCollection<Movie>("movies");
+            moviesCollection = database.GetCollection<Movie>("Movies");
         }
+
+
     }
 }

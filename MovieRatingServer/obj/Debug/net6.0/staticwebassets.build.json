@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "OGK2Vfm9ytqCg5DUfSOSYNQ7/jJ5zCrlqOLX4MATZN0=",
+  "Source": "MovieRatingServer",
+  "BasePath": "_content/MovieRatingServer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
