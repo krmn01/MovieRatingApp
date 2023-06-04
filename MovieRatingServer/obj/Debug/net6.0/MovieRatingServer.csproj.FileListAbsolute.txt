@@ -43,3 +43,12 @@ C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\obj\Debug\net6.0\r
 C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\obj\Debug\net6.0\MovieRatingServer.pdb
 C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\obj\Debug\net6.0\MovieRatingServer.genruntimeconfig.cache
 C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\obj\Debug\net6.0\ref\MovieRatingServer.dll
+C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\bin\Debug\net6.0\AspNetCore.Identity.MongoDbCore.dll
+C:\Users\DELL\Desktop\DOTNET\MovieRatingApp\MovieRatingServer\bin\Debug\net6.0\MongoDbGenericRepository.dll

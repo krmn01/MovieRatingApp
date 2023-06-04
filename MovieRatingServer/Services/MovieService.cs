@@ -29,5 +29,10 @@ namespace MovieRatingServer.Services
         
             return tmpMovie == null ? false : true;  
         }
+
+        public async Task<bool> RateMovie(Movie movie, User user)
+        {
+            return false;
+        }
     }
 }

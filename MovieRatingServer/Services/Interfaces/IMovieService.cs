@@ -8,6 +8,8 @@ namespace MovieRatingServer.Services.Interfaces
         Task<List<Movie>> GetAllMovies();
         Task<Movie> GetMovie(string id);
         Task<bool> UpdateMovie(Movie movie);
+
+        Task<bool> RateMovie(Movie movie, User user);
        
     }
 }

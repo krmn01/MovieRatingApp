@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieRatingServer.Models;
 using MovieRatingServer.Services;
 using MovieRatingServer.Services.Interfaces;
@@ -33,6 +35,20 @@ namespace MovieRatingServer.Controllers
         {
             var tmp = await _movieService.UpdateMovie(movie);
             return tmp == true ? Ok() : BadRequest();
+        }
+
+        private async Task<bool> RateMovie(Movie movie, User user)
+        {
+            return false;
+        }
+
+        [HttpPost]
+        [Route("rate/{Id}")]
+        [Authorize(Roles = "user", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> RateMovies(Movie movie, User user)
+        {
+            var result = await RateMovie(movie, user);
+            return result ? Ok() : BadRequest();  
         }
 
         //[HttpPut("{id}")]
