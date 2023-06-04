@@ -23,6 +23,8 @@ namespace MovieRatingServer.Controllers
             _roleManager = roleManager;
         }
 
+      
+
         [HttpPost]
         [Route("roles/add")]
         public async Task<IActionResult> CreateRole([FromBody]RoleRequest request)

@@ -8,8 +8,10 @@ namespace MovieRatingServer.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
-        public User? user { get; set; }
+        public string? userId { get; set; }
+
+        public string? movieId { get; set; }
         
-        public float rating { get; set; }
+        public int rating { get; set; }
     }
 }

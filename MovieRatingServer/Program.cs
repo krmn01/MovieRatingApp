@@ -20,9 +20,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("MongoDB"));
-builder.Services.AddScoped<MongoService>(); // Change to AddScoped
+builder.Services.AddScoped<MongoService>(); 
 
-builder.Services.AddScoped<IMovieService, MovieService>(); // Change to AddScoped
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 BsonSerializer.RegisterSerializer(new GuidSerializer(MongoDB.Bson.BsonType.String));
 BsonSerializer.RegisterSerializer(new DateTimeSerializer(MongoDB.Bson.BsonType.String));

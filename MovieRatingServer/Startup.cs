@@ -33,6 +33,7 @@ namespace MovieRatingServer
             services.AddSingleton<MongoService>();
 
             services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             BsonSerializer.RegisterSerializer(new GuidSerializer(MongoDB.Bson.BsonType.String));
             BsonSerializer.RegisterSerializer(new DateTimeSerializer(MongoDB.Bson.BsonType.String));

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MovieRatingServer.Dtos;
 using MovieRatingServer.Models;
 using MovieRatingServer.Services;
 using MovieRatingServer.Services.Interfaces;
@@ -12,11 +13,15 @@ namespace MovieRatingServer.Controllers
     public class MovieController : Controller
     {
         private readonly IMovieService _movieService;
+        private readonly IAuthService _authService;
 
-        public MovieController(IMovieService movieService)
+        public MovieController(IMovieService movieService, IAuthService authService)
         {
             _movieService = movieService;
+            _authService = authService;
         }
+
+
 
         [HttpGet("{id}")]
         public async Task<Movie> GetMovie(string id)
@@ -37,19 +42,29 @@ namespace MovieRatingServer.Controllers
             return tmp == true ? Ok() : BadRequest();
         }
 
-        private async Task<bool> RateMovie(Movie movie, User user)
+        private async Task<bool> RateMovie(string userId, RateMovieRequest rate)
         {
-            return false;
+            return await _movieService.RateMovie(userId, rate);
         }
 
         [HttpPost]
-        [Route("rate/{Id}")]
-        [Authorize(Roles = "user", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> RateMovies(Movie movie, User user)
+        [Route("add")]
+        public async Task<IActionResult> AddMovie([FromBody]Movie movie)
         {
-            var result = await RateMovie(movie, user);
-            return result ? Ok() : BadRequest();  
+            return await _movieService.AddMovie(movie) ? Ok() : BadRequest();
         }
+
+        [HttpPost]
+        [Route("rate")]
+        [Authorize(Roles = "user")]
+        public async Task<IActionResult> RateMovies([FromBody] RateMovieRequest rate, [FromHeader(Name = "Authorization")] string token)
+        {
+            var userId = _authService.GetUserIdFromToken(token);
+            
+            var result = await RateMovie(userId, rate);
+            return result ? Ok() : BadRequest();
+        }
+
 
         //[HttpPut("{id}")]
         //public async Task<IActionResult> Put(string id, )

@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MovieRatingServer.Dtos;
 using MovieRatingServer.Models;
 using MovieRatingServer.Services.Interfaces;
 
@@ -12,6 +13,16 @@ namespace MovieRatingServer.Services
         public MovieService(MongoService mongoService)
         {
             _mongoService = mongoService;
+        }
+
+        public async Task<bool> AddMovie(Movie movie)
+        {
+            if (movie == null)
+            {
+                return false;
+            }
+            await _mongoService.moviesCollection.InsertOneAsync(movie);
+            return true;
         }
         public async Task<Movie> GetMovie(string id)
         {
@@ -30,9 +41,33 @@ namespace MovieRatingServer.Services
             return tmpMovie == null ? false : true;  
         }
 
-        public async Task<bool> RateMovie(Movie movie, User user)
+        public async Task<bool> RateMovie(string userId, RateMovieRequest rate)
         {
-            return false;
+            var tmpMovie = await GetMovie(rate.MovieId);
+
+            if (tmpMovie == null) return false;
+
+            var movieRate = new MovieRate
+            {
+                movieId = rate.MovieId,
+                userId = userId,
+                rating = rate.Rating
+            };
+
+            foreach (var i in tmpMovie.Rating)
+            {
+                if (i.userId == userId)
+                {
+                    i.rating = rate.Rating;
+                    return await UpdateMovie(tmpMovie);
+                }
+            }
+
+           
+
+            tmpMovie?.Rating.Add(movieRate);
+
+            return await UpdateMovie(tmpMovie);
         }
     }
 }
