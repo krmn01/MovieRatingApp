@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MovieRatingServer.Dtos;
@@ -27,6 +28,7 @@ namespace MovieRatingServer.Controllers
 
         [HttpPost]
         [Route("roles/add")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateRole([FromBody]RoleRequest request)
         {
             var newRole = new Role { Name = request.Role };

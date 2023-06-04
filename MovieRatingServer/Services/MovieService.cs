@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using MovieRatingServer.Dtos;
 using MovieRatingServer.Models;
 using MovieRatingServer.Services.Interfaces;
+using System.Net.WebSockets;
 
 namespace MovieRatingServer.Services
 {
@@ -15,6 +16,14 @@ namespace MovieRatingServer.Services
             _mongoService = mongoService;
         }
 
+        public async Task<bool> DeleteMovie(string movieId)
+        {
+            var tmpMovie = await _mongoService.moviesCollection.Find(x => x.Id == movieId).FirstOrDefaultAsync();
+            if (tmpMovie == null) return false;
+            _mongoService.moviesCollection.DeleteOne(a => a.Id == movieId);
+
+            return true;
+        }
         public async Task<bool> AddMovie(Movie movie)
         {
             if (movie == null)
@@ -47,6 +56,9 @@ namespace MovieRatingServer.Services
 
             if (tmpMovie == null) return false;
 
+            if(rate.Rating < 1 || rate.Rating>5) rate.Rating = 3;
+
+
             var movieRate = new MovieRate
             {
                 movieId = rate.MovieId,
@@ -69,5 +81,30 @@ namespace MovieRatingServer.Services
 
             return await UpdateMovie(tmpMovie);
         }
+
+        public async Task<bool> CommentMovie(string userId, CommentRequest comment)
+        {
+            var tmpMovie = await GetMovie(comment.MovieId);
+            var tmpUser = await _mongoService.GetUserById(userId);
+
+            if (tmpMovie == null || tmpUser == null|| comment.Content == string.Empty) return false;
+
+            var tmpDateTime = DateTime.Now;
+            
+            var newComment = new Comment
+            {
+                content = comment.Content,
+                movieId = comment.MovieId,
+                userId = userId,
+                userName = tmpUser.UserName,
+                dateTime = tmpDateTime,
+                formatedDataTime = tmpDateTime.ToString("HH:mm dd/MM/yyyy")
+        };
+
+            tmpMovie?.Comments.Add(newComment);
+
+            return await UpdateMovie(tmpMovie);
+        }
+
     }
 }

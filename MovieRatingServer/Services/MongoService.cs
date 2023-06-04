@@ -18,6 +18,8 @@ namespace MovieRatingServer.Services
         {
             return await userManager.FindByIdAsync(Id);
         }
+
+
         public MongoService(
             IOptions<MongoSettings> mongoSettings,
             UserManager<User> userManager,

@@ -13,6 +13,10 @@ namespace MovieRatingServer.Services.Interfaces
         Task<bool> UpdateMovie(Movie movie);
 
         Task<bool> RateMovie(string userId, RateMovieRequest rate);
+
+        Task<bool> CommentMovie(string userId, CommentRequest comment);
+
+        Task<bool> DeleteMovie(string movieId);
        
     }
 }
