@@ -29,6 +29,16 @@ namespace MovieRatingServer
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
             services.Configure<MongoSettings>(Configuration.GetSection("MongoDB"));
             services.AddSingleton<MongoService>();
 
@@ -112,7 +122,7 @@ namespace MovieRatingServer
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseCors("AllowOrigin");
             app.UseRouting();
 
             app.UseAuthentication();

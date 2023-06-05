@@ -49,6 +49,7 @@ namespace MovieRatingServer.Controllers
         }
 
         [HttpGet]
+        [Route("all")]
         public async Task<List<Movie>> GetAllMovies()
         {
             return await _movieService.GetAllMovies();
