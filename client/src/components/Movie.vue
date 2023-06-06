@@ -38,7 +38,19 @@
             alt="Movie Image"
             class="movie-image" >
 
-          <p class="movie-description">{{ movie.description }}</p>
+          <div class="card">
+            <div class="cardbody">
+              <p> Reżyser: {{movie.director}} </p>
+              <p> Rok produkcji: {{movie.productionYear}} </p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="cardbody">
+              <p class="movie-description">{{ movie.description }}</p>
+            </div>
+          </div>
+          
         </div>
 
         <div class="comments">
@@ -56,7 +68,7 @@
             <div v-if="isLoggedIn">
                 <div class="add-comment">
                     <textarea class="form-control" v-model="newComment" rows="3" cols="30" placeholder="Zawartość komentarza..."></textarea>
-                    <button class="btnbtn-dark" @click="addComment">Dodaj komentarz</button>
+                    <button class="btn btn-dark" @click="addComment">Dodaj komentarz</button>
                 </div>
             </div>
         </div>
@@ -198,6 +210,11 @@ export default {
 <style scoped>
 .movie-details {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .movie-image {
@@ -209,13 +226,8 @@ export default {
 
 .movie-description {
   font-size: 16px;
-  margin-top:15px;
+  margin-top: 15px;
   margin-bottom: 10px;
-}
-
-.ratingCount{
-  margin-top:15px;
-  margin-left:10px;
 }
 
 .comments {
@@ -232,7 +244,7 @@ export default {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-  margin-top:10px;
+  margin-top: 10px;
 }
 
 .comment-row {
@@ -242,15 +254,16 @@ export default {
 
 .username {
   align-self: flex-start;
-  margin-left:25px;
+  margin-left: 25px;
 }
 
 .date {
   align-self: flex-end;
-  margin-right:25px;
+  margin-right: 25px;
 }
 
 .spacer {
   flex-grow: 1;
 }
+
 </style>

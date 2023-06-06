@@ -5,6 +5,7 @@ using MovieRatingServer.Dtos;
 using MovieRatingServer.Models;
 using MovieRatingServer.Services;
 using MovieRatingServer.Services.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace MovieRatingServer.Controllers
 {
@@ -19,6 +20,46 @@ namespace MovieRatingServer.Controllers
         {
             _movieService = movieService;
             _authService = authService;
+        }
+
+        private async Task<bool> ValidateMovie(Movie movie)
+        {
+            if (string.IsNullOrEmpty(movie.Title))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(movie.ImgSrc))
+            {
+                return false;
+            }
+
+            if (!movie.ImgSrc.EndsWith(".png"))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(movie.Director))
+            {
+                return false;
+            }
+
+            Regex directorRegex = new Regex(@"^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+\s[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$");
+            if (!directorRegex.IsMatch(movie.Director))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(movie.Description))
+            {
+                return false;
+            }
+
+            if (movie.ProductionYear < 1920 || movie.ProductionYear > 2023)
+            {
+                return false;
+            }
+            return true;
         }
 
         private async Task<float> GetRating(string movieId)
@@ -78,8 +119,14 @@ namespace MovieRatingServer.Controllers
       
 
         [HttpPut]
-        public async Task<IActionResult> UpdateMovie(Movie movie)
+        [Route("update/this")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateMovie([FromBody]Movie movie)
         {
+            var validation = await ValidateMovie(movie);
+
+            if (validation != true) return BadRequest();
+
             var tmp = await _movieService.UpdateMovie(movie);
             return tmp == true ? Ok() : BadRequest();
         }
@@ -102,17 +149,21 @@ namespace MovieRatingServer.Controllers
 
 
         [HttpPost]
-        [Route("add")]
+        [Route("add/new")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddMovie([FromBody]Movie movie)
         {
+            var validation = await ValidateMovie(movie);
+
+            if (validation != true) return BadRequest();
+
             return await _movieService.AddMovie(movie) ? Ok() : BadRequest();
         }
 
         [HttpDelete]
-        [Route("delete")]
+        [Route("delete/{movieId}")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> DeleteMovie([FromBody]string movieId)
+        public async Task<IActionResult> DeleteMovie(string movieId)
         {
             return await _movieService.DeleteMovie(movieId) ? Ok("Movie deleted") : BadRequest();
         }
