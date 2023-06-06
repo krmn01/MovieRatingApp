@@ -19,6 +19,8 @@ namespace MovieRatingServer.Services.Interfaces
         Task<bool> DeleteMovie(string movieId);
 
         Task<List<Movie>> SearchMovie(string query);
+
+        Task<MovieRate> GetMovieRateByUserId(string userId, string movieId);
        
     }
 }

@@ -19,6 +19,15 @@ namespace MovieRatingServer.Services
             return await userManager.FindByIdAsync(Id);
         }
 
+        public async Task<MovieRate> GetMovieRateByUserId(string userId, string movieId)
+        {
+            var movie = await moviesCollection.Find(x => x.Id == movieId).FirstOrDefaultAsync(); 
+            foreach(var rate in movie.Rating)
+            {
+                if (rate.userId == userId) return rate;
+            }
+            return new MovieRate { rating = 0};
+        }
 
         public MongoService(
             IOptions<MongoSettings> mongoSettings,

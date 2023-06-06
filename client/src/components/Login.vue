@@ -55,6 +55,7 @@ export default{
     },
 
     methods:{
+        
         signup(){
             this.$router.push({name: 'Register'});
         },
@@ -73,8 +74,11 @@ export default{
                         localStorage.setItem('token', JSON.stringify(response.data.accessToken))
                         response.data.accessToken = "";
                         localStorage.setItem('userId', JSON.stringify(response.data.userId))
+                        localStorage.setItem('userName', JSON.stringify(response.data.userName))
+
                         console.log(response.data)
-                        this.$router.push({name: "Movies"})
+                        window.location.href = "/movies";
+                        
                     }
                     
                 })

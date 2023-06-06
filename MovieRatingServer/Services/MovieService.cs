@@ -119,5 +119,10 @@ namespace MovieRatingServer.Services
 
             return result;
         }
+
+        public async Task<MovieRate> GetMovieRateByUserId(string userId, string movieId)
+        {
+            return await _mongoService.GetMovieRateByUserId(userId, movieId);
+        }
     }
 }

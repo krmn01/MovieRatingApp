@@ -1,8 +1,14 @@
 <template>
   <div>
     <div class="search-container">
-      <input type="text" v-model="searchQuery" >
-      <button @click="searchMovies">Szukaj</button>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="input-group search">
+            <input type="text" class="form-control" v-model="searchQuery" />
+            <button type="button" class="btn btn-dark" @click="searchMovies">Szukaj</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div v-if="movies && movies.length > 0">
@@ -45,26 +51,35 @@ export default {
     this.getAllMovies();
   },
   methods: {
-    async searchMovies() {
-      try {
-        const response = await axios.get(this.hostname + `Movie/search/${this.searchQuery}`);
-        this.movies = response.data;
-        for (let i = 0; i < this.movies.length; i++) {
-          const movie = this.movies[i];
-          let rate = 0;
+   async searchMovies() {
+  try {
+    if (this.searchQuery !== null && this.searchQuery.trim() !== '') {
+      const response = await axios.get(this.hostname + `Movie/search/${this.searchQuery}`);
+      this.movies = response.data;
+    } else {
+      await this.getAllMovies();
+      return;
+    }
 
-          movie.rating.forEach((x) => {
-            rate += x.rating;
-          });
+    for (let i = 0; i < this.movies.length; i++) {
+      const movie = this.movies[i];
+      let rate = 0;
 
-          const count = movie.rating.length;
-          movie.rate = parseFloat(rate) / parseFloat(count);
-          movie.count = count;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
+      movie.rating.forEach((x) => {
+        rate += x.rating;
+      });
+
+      const count = movie.rating.length;
+      if(count>0){
+      movie.rate = parseFloat(rate) / parseFloat(count);
+      movie.count = count;
+      }else movie.rate=0;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+},
+
     async getAllMovies() {
       try {
         const response = await axios.get(this.hostname + 'Movie/all');
@@ -79,7 +94,8 @@ export default {
           });
 
           const count = movie.rating.length;
-          movie.rate = parseFloat(rate) / parseFloat(count);
+          if(count>0){movie.rate = parseFloat(rate) / parseFloat(count);}
+          else movie.rate = 0;
           movie.count = count;
         }
       } catch (error) {
@@ -128,5 +144,10 @@ export default {
 
 .movie-rate {
   margin-left: 10px;
+}
+
+.search{
+  margin-bottom:20px;
+  margin-top:20px;
 }
 </style>

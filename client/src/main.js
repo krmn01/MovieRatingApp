@@ -10,5 +10,6 @@ const app = createApp(App);
 app.config.globalProperties.hostname = "https://localhost:7108/api/"
 app.config.globalProperties.movieImgs = "../assets/img/movies/"
 app.use(router)
+
 app.use(VueAxios,axios)
 app.mount('#app')

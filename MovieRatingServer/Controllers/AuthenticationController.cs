@@ -120,7 +120,8 @@ namespace MovieRatingServer.Controllers
                     message = "Login successful",
                     email = user?.Email,
                     success = true,
-                    userId = user?.Id.ToString()
+                    userId = user?.Id.ToString(),
+                    userName = user?.UserName
                 };
             }catch(Exception e)
             {

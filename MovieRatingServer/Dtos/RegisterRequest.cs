@@ -14,7 +14,7 @@ namespace MovieRatingServer.Dtos
         public string passwordConfirmation { get; set;} = string.Empty;
 
 
-        [Required]
+        [Required, MaxLength(15), MinLength(3)]
         public string username { get; set; } = string.Empty;
     }
 }

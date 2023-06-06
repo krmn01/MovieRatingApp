@@ -49,6 +49,19 @@ namespace MovieRatingServer.Controllers
             };
         }
 
+        [HttpGet("{id}")]
+        [Route(("get/{id}/rate"))]
+        [Authorize(Roles = "user")]
+        public async Task<GetRateResponse> GetUsersMovieRate([FromHeader(Name = "Authorization")] string token,string id)
+        {
+            var userId =  _authService.GetUserIdFromToken(token);
+            var usersRate = await _movieService.GetMovieRateByUserId(userId, id);
+            return new GetRateResponse
+            {
+                MovieRate = usersRate
+            };
+        }
+
         [HttpGet("{query}")]
         [Route("search/{query}")]
         public async Task<List<Movie>> SearchMovies(string query)
@@ -77,6 +90,18 @@ namespace MovieRatingServer.Controllers
         }
 
         [HttpPost]
+        [Route("set/rate")]
+        [Authorize(Roles = "user")]
+        public async Task<IActionResult> RateMovies([FromBody] RateMovieRequest rate, [FromHeader(Name = "Authorization")] string token)
+        {
+            var userId = _authService.GetUserIdFromToken(token);
+
+            var result = await RateMovie(userId, rate);
+            return result ? Ok() : BadRequest();
+        }
+
+
+        [HttpPost]
         [Route("add")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddMovie([FromBody]Movie movie)
@@ -92,24 +117,14 @@ namespace MovieRatingServer.Controllers
             return await _movieService.DeleteMovie(movieId) ? Ok("Movie deleted") : BadRequest();
         }
 
-        [HttpPost]
-        [Route("rate")]
-        [Authorize(Roles = "user")]
-        public async Task<IActionResult> RateMovies([FromBody] RateMovieRequest rate, [FromHeader(Name = "Authorization")] string token)
-        {
-            var userId = _authService.GetUserIdFromToken(token);
-            
-            var result = await RateMovie(userId, rate);
-            return result ? Ok() : BadRequest();
-        }
-
+       
         private async Task<bool> CommentMovie(string userId, CommentRequest comment)
         {
             return await _movieService.CommentMovie(userId, comment);
         }
 
         [HttpPost]
-        [Route("comment")]
+        [Route("comment/new")]
         [Authorize(Roles = "user")]
         public async Task<IActionResult> CommentMovies([FromBody] CommentRequest comment, [FromHeader(Name = "Authorization")] string token)
         {

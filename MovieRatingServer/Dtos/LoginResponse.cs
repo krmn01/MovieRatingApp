@@ -8,5 +8,7 @@
         public string email { get; set; } = string.Empty;
 
         public string message { get; set; }= string.Empty;
+
+        public string userName { get; set; } = string.Empty;
     }
 }
