@@ -106,5 +106,18 @@ namespace MovieRatingServer.Services
             return await UpdateMovie(tmpMovie);
         }
 
+        public async Task<List<Movie>> SearchMovie(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                return await _mongoService.moviesCollection.Find(new BsonDocument()).ToListAsync();
+            }
+
+            var filter = Builders<Movie>.Filter.Regex("Title", new BsonRegularExpression(query, "i"));
+
+            var result = await _mongoService.moviesCollection.Find(filter).ToListAsync();
+
+            return result;
+        }
     }
 }

@@ -30,12 +30,13 @@ namespace MovieRatingServer.Controllers
             {
                 rating += (float) x.rating;
             }
-            return (float)Math.Round((rating / (float)tmpMovie.Rating.Count), 2);
+            return tmpMovie.Rating.Count>0 ? (float)Math.Round((rating / (float)tmpMovie.Rating.Count), 2) : 0;
         }
 
 
 
         [HttpGet("{id}")]
+        [Route("get/{id}")]
         public async Task<GetMovieResponse> GetMovie(string id)
         {
             var tmp = await _movieService.GetMovie(id);
@@ -48,12 +49,20 @@ namespace MovieRatingServer.Controllers
             };
         }
 
+        [HttpGet("{query}")]
+        [Route("search/{query}")]
+        public async Task<List<Movie>> SearchMovies(string query)
+        {
+            return await _movieService.SearchMovie(query);
+        }
+
         [HttpGet]
         [Route("all")]
-        public async Task<List<Movie>> GetAllMovies()
-        {
-            return await _movieService.GetAllMovies();
-        }
+         public async Task<List<Movie>> GetAllMovies()
+         {
+             return await _movieService.GetAllMovies();
+         }
+      
 
         [HttpPut]
         public async Task<IActionResult> UpdateMovie(Movie movie)

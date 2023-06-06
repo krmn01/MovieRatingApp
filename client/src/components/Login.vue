@@ -66,7 +66,7 @@ export default{
                     password: this.user.password
                 }; 
 
-                axios.post(this.hostname + "api/authenticate/login", request)
+                axios.post(this.hostname + "authenticate/login", request)
                 .then(response => {
                     if(response.data.success == true)
                     {

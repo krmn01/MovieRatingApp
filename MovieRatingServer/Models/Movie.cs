@@ -15,6 +15,8 @@ namespace MovieRatingServer.Models
         public string? Description { get; set; }
         public string? Director { get; set; }
 
+        public int? ProductionYear { get; set; }
+
         public List<Comment>? Comments { get; set; }
         public List<MovieRate>? Rating { get; set; }  
     }
